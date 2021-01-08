@@ -3,12 +3,24 @@ const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
+const dca = require('./dca')
 
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+
+// Route
+app.post('/dca', (req, res) => {
+  const payload = {
+    pair: req.pair,
+    amount: req.amount,
+    days = req.days,
+    pairing: req.pairing
+  }
+  dca.start()
+})
 
 // error handler
 app.use(function (err, req, res, next) {
