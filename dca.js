@@ -1,5 +1,9 @@
 const exchange = require('./exchange')
-
+process.env.NTBA_FIX_319 = 1
+const TelegramBot = require('node-telegram-bot-api')
+const token = process.env.TELEGRAM_TOKEN
+const chatId = process.env.TELEGRAM_CHAT_ID
+const bot = new TelegramBot(token)
 // while go = true market buy a little of this
 
 // get days
@@ -14,14 +18,13 @@ const simpleBuy = {
 
     async function generateOrder(days, amount, minQuantity, pairing) {
       function calcIntervals(days) {
-        const minutes = Number(days) * 24
-        return minutes
+        const hours = Number(days) * 24
+        return hours
       }
       const intervals = calcIntervals(days)
 
       async function getAmount(amount, interval, minQuantity) {
-        const rand = Math.floor(Math.random() * Math.floor(10))
-        const orderAmount = (amount / interval) * rand
+        const orderAmount = amount / interval
         if (orderAmount < minQuantity) {
           return minQuantity
         }
@@ -37,12 +40,9 @@ const simpleBuy = {
       return order
     }
 
-    // Generate random number between 0 and 10 minutes
-    function generateRandTime() {
-      return Math.floor(Math.random() * Math.floor(60000000))
-    }
     const go = true
     while (go) {
+      console.log('doing a thing')
       const order = await generateOrder(days, amount, minQuantity, pairing)
       function wait() {
         return new Promise((resolve, reject) => {
@@ -51,10 +51,12 @@ const simpleBuy = {
               return resolve(
                 console.log('pushing order to exchange'),
                 console.log(order),
-                exchange.marketSell(order)
+                bot.sendMessage(chatId, `bought some`),
+                exchange.marketBuy(order)
               )
+              // tell me
             },
-            generateRandTime(),
+            1000,
             order
           )
         })

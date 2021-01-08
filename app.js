@@ -11,16 +11,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-// Route
-app.post('/dca', (req, res) => {
-  const payload = {
-    pair: req.pair,
-    amount: req.amount,
-    days = req.days,
-    pairing: req.pairing
-  }
-  dca.start()
-})
+// start buy script
+
+const payload = {
+  asset: 'ETH',
+  amount: 1,
+  days: 5,
+  pairing: 'USD',
+}
+dca.start(payload)
 
 // error handler
 app.use(function (err, req, res, next) {
