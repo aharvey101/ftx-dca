@@ -4,6 +4,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const dca = require('./dca')
+const dca2 = require('./dca2')
 
 const app = express()
 
@@ -19,7 +20,18 @@ const payload = {
   days: 5,
   pairing: 'USD',
 }
-dca.start(payload)
+// dca.start(payload)
+
+// dca2.test({ text: 'testing' })
+dca2.start({
+  asset: 'ETH',
+  totalAmount: 1,
+  days: 10,
+  pairing: 'USD',
+  // interval in minutes
+  minuteInterval: 60,
+  cronInterval: ' * 1 * * * *',
+})
 
 // error handler
 app.use(function (err, req, res, next) {

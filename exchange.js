@@ -5,7 +5,7 @@ const ccxt = new CCXT.ftx({
   apiKey: process.env.FTX_API_KEY,
   headers: {
     'FTX-SUBACCOUNT':
-      process.env.NODE_ENV === 'production' ? 'initial' : 'test2',
+      process.env.NODE_ENV === 'production' ? 'buyEth' : 'test2',
   },
 })
 
